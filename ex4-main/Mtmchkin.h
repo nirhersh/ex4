@@ -1,6 +1,10 @@
 #ifndef MTMCHKIN_H_
 #define MTMCHKIN_H_
 
+#include "Players/Player.h"
+#include "Cards/Card.h"
+#include <vector>
+#include <queue>
 class Mtmchkin{
 
 public:
@@ -46,6 +50,13 @@ public:
     *          int - number of rounds played
     */
     int getNumberOfRounds() const;
+
+private:
+    std::queue<Player*> m_players;
+    std::queue<Card*> m_cards;
+    std::priority_queue<Player> m_leaderBoard;
+    bool m_isGameOver;
+    int m_numberOfRounds;
 };
 
 

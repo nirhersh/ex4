@@ -6,7 +6,7 @@
 #include "Rogue.h"
 #include "Fighter.h"
 #include "Wizard.h"
-//#include "../utilities.h"
+#include "../utilities.h"
 
 using std::string;
 using std::cout;
@@ -37,7 +37,7 @@ m_coins(minCoins)
 //  void Player::printInfo() const{
 //      printPlayerDetails(m_name.c_str(), m_level, m_force, m_healthPoints, m_coins);
 //  }
-    std::ostream& operator<<(std::ostream& os, Player& player1)
+    std::ostream& operator<<(std::ostream& os, const Player& player1)
     {
         player1.print(os);
         return os;
@@ -109,3 +109,17 @@ int Player::getAttackStrength() const{
     return m_force + m_level;
 }
 
+string Player::getName()
+{
+    return m_name;
+}
+
+int Player::getCoins()
+{
+    return m_coins;
+}
+
+void Player::knockOut()
+{
+    m_healthPoints = 0;
+}

@@ -2,8 +2,8 @@
 #define Fairy_H
 
 #include "Card.h"
-#include "Wizard.h"
-#include "utilities.h"
+#include "../Players/Wizard.h"
+#include "../utilities.h"
 #include <string>
 
 class Fairy : public Card{

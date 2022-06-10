@@ -7,8 +7,9 @@
 
 class Wizard : public Player {
 public:
+    Wizard(const string name, const int maxHP=100, const int force=5);
     void heal(const int hp) override;
-    void print(std::ostream& os) override;
+    void print(std::ostream& os) const override;
 
 };
 

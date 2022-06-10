@@ -2,8 +2,8 @@
 #define BARFIGHT_H
 
 #include "Card.h"
-#include "Fighter.h"
-#include "utilities.h"
+#include "../Players/Fighter.h"
+#include "../utilities.h"
 #include <string>
 
 class Barfight : public Card{

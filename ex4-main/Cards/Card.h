@@ -5,9 +5,9 @@
 #define EX2_Card_H
 
 #include <string>
-#include "Player.h"
-#include "utilities.h"
-#include "Exception.h"
+#include "../Players/Player.h"
+#include "../utilities.h"
+#include "../Exception.h"
 
 class Card {
 public:
@@ -35,7 +35,7 @@ public:
 private:
     std::string m_name;
 
-    virtual friend std::ostream& operator<<(std::ostream& os, const Card& card) = 0;
+    friend std::ostream& operator<<(std::ostream& os, const Card& card);
 };
 
 

@@ -3,8 +3,21 @@
 
 #include "Players/Player.h"
 #include "Cards/Card.h"
+#include "Cards/Fairy.h"
+#include "Cards/Goblin.h"
+#include "Cards/Barfight.h"
+#include "Cards/Dragon.h"
+#include "Cards/Merchant.h"
+#include "Cards/Pitfall.h"
+#include "Cards/Merchant.h"
+#include "Cards/Treasure.h"
+#include "Cards/vampire.h"
+#include "Players/Fighter.h"
+#include "Players/Wizard.h"
+#include "Players/Rogue.h"
 #include <vector>
 #include <queue>
+#include <deque>
 class Mtmchkin{
 
 public:
@@ -52,8 +65,8 @@ public:
     int getNumberOfRounds() const;
 
 private:
-    std::queue<Player*> m_players;
-    std::queue<Card*> m_cards;
+    std::deque<Player*> m_players;
+    std::deque<Card*> m_cards;
     std::priority_queue<Player> m_leaderBoard;
     bool m_isGameOver;
     int m_numberOfRounds;

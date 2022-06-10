@@ -2,8 +2,8 @@
 #define Pitfall_H
 
 #include "Card.h"
-#include "Rogue.h"
-#include "utilities.h"
+#include "../PLayers/Rogue.h"
+#include "../utilities.h"
 #include <string>
 
 class Pitfall : public Card{

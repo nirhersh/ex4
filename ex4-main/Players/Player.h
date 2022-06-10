@@ -6,6 +6,7 @@
 
 #include <string>
 #include <iostream>
+class Player;
 #include "../utilities.h"
 
 using std::string;
@@ -41,10 +42,16 @@ public:
     Player& operator=(const Player& other) = default;
 
     /*
-    *
-    * a function that prints the player info
-    * 
+    * getters
     */
+   string getName();
+   int getCoins();
+
+   /*
+    * life to zero
+    */
+   void knockOut();
+
 
     /*
     *
@@ -106,7 +113,7 @@ public:
     * @param coins - the out stream
     * 
     */
-    virtual void print(std::ostream& os) = 0; 
+    virtual void print(std::ostream& os) const =0; 
 
     /*
     *
@@ -138,16 +145,16 @@ public:
 
 private:
 
-    friend std::ostream& operator<<(std::ostream& os, Player& player1);
+    friend std::ostream& operator<<(std::ostream& os, const Player& player1) ;
 
 
 protected:
-    int m_coins;
-    int m_healthPoints;
-    int m_maxHP;
-    int m_level;
-    int m_force;
     string m_name;
+    int m_level;
+    int m_healthPoints;
+    int m_coins;
+    int m_maxHP;
+    int m_force;
     static const int maxLevel = 10;
     static const int minLevel = 1;
     static const int minHealth = 0;

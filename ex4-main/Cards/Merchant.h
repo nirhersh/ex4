@@ -2,7 +2,7 @@
 #define MERCHANT_H
 
 #include "Card.h"
-#include "utilities.h"
+#include "../utilities.h"
 #include <string>
 
 class Merchant : public Card{

@@ -9,6 +9,8 @@
 
 Mtmchkin::Mtmchkin(const std::string fileName)
 {
+    m_numberOfRounds = 0;
+    m_isGameOver = false;
     std::fstream cardsDeckFile;
     cardsDeckFile.open(fileName, std::ios::in);
     if(!cardsDeckFile.is_open()){
@@ -18,6 +20,8 @@ Mtmchkin::Mtmchkin(const std::string fileName)
     string cardType;
     while(std::getline(cardsDeckFile, cardType))
     {
+        // Should instead keep a set of strings with the names and use the function find() to see if the name from the file is in the set, and also a switch case might be nicer than all of the 
+        // if elses, same with the players types :)
         if (cardType != "Fairy" && cardType != "Goblin" && cardType != "Vampire" && cardType != "Barfight" && cardType != "Dragon" 
                                 && cardType != "Merchant" && cardType != "pitfall" && cardType != "Treasure"){
             while(m_cards.size() > 0)
@@ -127,7 +131,50 @@ Mtmchkin::Mtmchkin(const std::string fileName)
         }
 
     }
-    
+}
 
+void Mtmchkin::playRound(){
+    if(isGameOver()){
+            printGameEndMessage();
+            printGameLeaderboard();
+    }
+    m_numberOfRounds++;
+    printRoundStartMessage(m_numberOfRounds);
+    for(Player* currentPlayer : m_players){
+        if(currentPlayer->isKnockedOut()){
+            continue;
+        }
+        Card* currentCard = m_cards.front();
+        printTurnStartMessage(currentPlayer->getName());
+        currentCard->applyEncounter(*currentPlayer);
+        m_cards.pop_front();
+        m_cards.push_back(currentCard);
+    }
+}
 
+bool Mtmchkin::isGameOver(){
+    for(Player* player : m_players){
+        if(!player->isKnockedOut()){
+            m_isGameOver = false;
+        }
+        if(player->getLevel() == MAX_LEVEL){
+            m_isGameOver = true;
+            break;
+        }
+    }
+    return m_isGameOver;
+}
+
+void Mtmchkin::printGameLeaderboard(){
+    printLeaderBoardStartMessage();
+    int ranking = 1;
+    // initialize leaderboard
+    for(Player* playerPtr : m_players){
+        m_leaderBoard.push(playerPtr);
+    }
+    while(!m_leaderBoard.empty()){
+        printPlayerLeaderBoard(ranking, (*m_leaderBoard.top()));
+        m_leaderBoard.pop();
+        ++ranking;
+    }
 }

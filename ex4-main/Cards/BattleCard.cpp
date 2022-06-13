@@ -1,16 +1,23 @@
 #include "BattleCard.h"
+#include "Dragon.h"
 
-BattleCard::BattleCard(std::string name, int force, int loot, int damage, bool isDragon) :
- Card(name), m_force(force), m_loot(loot), m_damage(damage), m_isDragon(isDragon){};
+BattleCard::BattleCard(std::string name, int force, int loot, int damage) :
+ Card(name), m_force(force), m_loot(loot), m_damage(damage){};
 
 void BattleCard::applyEncounter(Player& player){
+    // check if battle card is a dragon
+    bool isDragon = false;
+    const Dragon* dragon = dynamic_cast<const Dragon*>(this);
+    if(dragon != nullptr){
+        isDragon = true;
+    }
     if(player.getAttackStrength() >= m_force){
         player.addCoins(m_loot);
         player.levelUp();
         printWinBattle(player.getName(), this->getName());
     }else{
         printLossBattle(player.getName(), this->getName());
-        if(m_isDragon){
+        if(isDragon){
             player.knockOut();
             return;
         }
@@ -18,7 +25,11 @@ void BattleCard::applyEncounter(Player& player){
     }
 }
 
-std::ostream& operator<<(std::ostream& os, const BattleCard& card){
-    printMonsterDetails(os, card.m_force, card.m_damage, card.m_loot, card.m_isDragon);
-    return os;
+void BattleCard::printCard(std::ostream& os) const{
+    bool isDragon = false;
+    const Dragon* dragon = dynamic_cast<const Dragon*>(this);
+    if(dragon != nullptr){
+        isDragon = true;
+    }
+    printMonsterDetails(os, m_force, m_damage, m_loot, isDragon);
 }

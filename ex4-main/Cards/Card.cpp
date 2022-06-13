@@ -20,7 +20,8 @@ std::string Card::getName() const{
 }
 
 std::ostream& operator<<(std::ostream& os, const Card& card){
-    printCardDetails(os, card.m_name);
+    printCardDetails(os, card.getName());
+    card.printCard(os);
     printEndOfCardDetails(os);
     return os;
 }

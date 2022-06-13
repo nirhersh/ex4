@@ -145,8 +145,7 @@ public:
 
 private:
 
-    friend std::ostream& operator<<(std::ostream& os, const Player& player1) ;
-
+    friend std::ostream& operator<<(std::ostream& os, const Player& player1);
 
 protected:
     string m_name;
@@ -163,5 +162,11 @@ protected:
     static const int defaultMaxHp = 100;
 };
 
+/*
+* boolean operator to compare players based on their level
+*/
+bool operator<(const Player& player1, const Player& player2);
+
+bool operator<(const Player& player1, const Player& player2);
 
 #endif //EX4_Card_H

@@ -9,8 +9,7 @@ public:
      /*
      * C'tor of Goblin class
     */
-    Goblin(std::string name = GOBLIN_NAME, int force = GOBLIN_FORCE, int loot=GOBLIN_LOOT, int damage=GOBLIN_DAMAGE,
-     bool isDragon=false);
+    Goblin(std::string name = GOBLIN_NAME, int force = GOBLIN_FORCE, int loot=GOBLIN_LOOT, int damage=GOBLIN_DAMAGE);
 
     Goblin(const Goblin&) = default;
 

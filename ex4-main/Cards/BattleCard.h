@@ -9,7 +9,7 @@ public:
      /*
      * C'tor of BattleCard class
     */
-    BattleCard(std::string name, int force, int loot, int damage, bool isDragon);
+    BattleCard(std::string name, int force, int loot, int damage);
 
 
     /*
@@ -25,12 +25,14 @@ public:
 
     BattleCard& operator=(const BattleCard& other) = default;
 
+protected:
+    void printCard(std::ostream& os) const override;
+
 
 private:
     int m_force;
     int m_loot;
     int m_damage;
-    bool m_isDragon;
 
     friend std::ostream& operator<<(std::ostream& os, const BattleCard& card);
 };

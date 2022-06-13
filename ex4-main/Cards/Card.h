@@ -8,6 +8,7 @@
 #include "../Players/Player.h"
 #include "../utilities.h"
 #include "../Exception.h"
+#include <ostream>
 
 class Card {
 public:
@@ -31,11 +32,14 @@ public:
 
     Card& operator=(const Card& other) = default;
 
+protected:
+    friend std::ostream& operator<<(std::ostream& os, const Card& card);
+
+    virtual void printCard(std::ostream& os) const;
 
 private:
     std::string m_name;
 
-    friend std::ostream& operator<<(std::ostream& os, const Card& card);
 };
 
 

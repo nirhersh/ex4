@@ -9,8 +9,7 @@ public:
      /*
      * C'tor of Dragon class
     */
-    Dragon(std::string name = DRAGON_NAME, int force = DRAGON_FORCE, int loot=DRAGON_LOOT, int damage=DRAGON_DAMAGE,
-     bool isDragon=true);
+    Dragon(std::string name = DRAGON_NAME, int force = DRAGON_FORCE, int loot=DRAGON_LOOT, int damage=DRAGON_DAMAGE);
 
     Dragon(const Dragon&) = default;
 

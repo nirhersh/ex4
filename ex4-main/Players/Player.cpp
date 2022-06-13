@@ -123,3 +123,11 @@ void Player::knockOut()
 {
     m_healthPoints = 0;
 }
+
+bool operator<(const Player& player1, const Player& player2){
+    return player1.getLevel() < player2.getLevel();
+}
+
+bool operator>(const Player& player1, const Player& player2){
+    return player1.getLevel() > player2.getLevel();
+}

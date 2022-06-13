@@ -9,8 +9,7 @@ public:
      /*
      * C'tor of Vampire class
     */
-    Vampire(std::string name = VAMPIRE_NAME, int force = VAMPIRE_FORCE, int loot=VAMPIRE_LOOT, int damage=VAMPIRE_DAMAGE,
-     bool isDragon=false);
+    Vampire(std::string name = VAMPIRE_NAME, int force = VAMPIRE_FORCE, int loot=VAMPIRE_LOOT, int damage=VAMPIRE_DAMAGE);
 
     Vampire(const Vampire&) = default;
 

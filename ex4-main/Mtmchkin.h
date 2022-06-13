@@ -54,7 +54,7 @@ public:
     *          True if the game ended
     *          False otherwise
     */
-    bool isGameOver() const;
+    bool isGameOver();
     
 	/*
     *  Returns the number of rounds played.
@@ -64,14 +64,22 @@ public:
     */
     int getNumberOfRounds() const;
 
+    void printGameLeaderboard();
+
+    class ComparePlayers{
+    public:
+        bool operator()(const Player* player1, const Player* player2) const{
+            return (*player1) < (*player2);
+        }
+    };
+
 private:
-    std::deque<Player*> m_players;
+    std::vector<Player*> m_players;
     std::deque<Card*> m_cards;
-    std::priority_queue<Player> m_leaderBoard;
+    std::priority_queue<Player*, std::vector<Player*>, ComparePlayers> m_leaderBoard;
     bool m_isGameOver;
     int m_numberOfRounds;
+    static const int MAX_LEVEL = 10;
 };
-
-
 
 #endif /* MTMCHKIN_H_ */

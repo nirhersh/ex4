@@ -56,6 +56,9 @@ public:
     *          False otherwise
     */
     bool isGameOver();
+
+
+    ~Mtmchkin();
     
 	/*
     *  Returns the number of rounds played.

@@ -3,33 +3,33 @@
 
 #include <string>
 
-class DeckFileError : public std::exception{};
 
 class CardError : public std::exception{};
 
-class DeckFileNotFound : public DeckFileError{
+class DeckFileNotFound : public std::exception{
 public:
-    const char* what() const throw() override{
+    const char* what() const noexcept override{
         return "Deck File Error: File not found";
     }
 };
 
-class DeckFileFormatError : public DeckFileError{
+class DeckFileFormatError : public std::exception{
 public:
-    DeckFileFormatError(int errorLine) : m_errorLine(errorLine){}
+    DeckFileFormatError(int errorLine) : m_errorLine(errorLine), message("Deck File Error: File format error in line "){
+        message += std::to_string(m_errorLine);
+    }
 
-    const char* what() const throw() override{
-        std::string line = std::to_string(m_errorLine);
-        std::string errorStr = "Deck File Error: File format error in line " + line;
-        return errorStr.c_str();
+    const char* what() const noexcept override{
+        return message.c_str();
     }
 private:
     int m_errorLine;
+    std::string message;
 };
 
-class DeckFileInvalidSize : public DeckFileError{
+class DeckFileInvalidSize : public std::exception{
 public:
-    const char* what() const throw() override{
+    const char* what() const noexcept override{
         return "Deck File Error: Deck size is invalid";
     }
 };

@@ -26,10 +26,10 @@ Mtmchkin::Mtmchkin(const std::string fileName)
         // if elses, same with the players types :)
         if (cardType != "Fairy" && cardType != "Goblin" && cardType != "Vampire" && cardType != "Barfight" && cardType != "Dragon" 
                                 && cardType != "Merchant" && cardType != "Pitfall" && cardType != "Treasure"){
-            while(m_cards.size() > 0)
-            {
-                m_cards.pop_front(); //clean storage
-            }
+        while (m_cards.size() > 0){
+            delete m_cards.back();
+            m_cards.pop_back();
+        }
             cardsDeckFile.close();
             throw DeckFileFormatError(line);
             }
@@ -69,11 +69,13 @@ Mtmchkin::Mtmchkin(const std::string fileName)
     }
     if(line < 5){
         while (m_cards.size() > 0){
-            m_cards.pop_front();
+            delete m_cards.back();
+            m_cards.pop_back();
         }
         cardsDeckFile.close();
         throw DeckFileInvalidSize();
     }
+    cardsDeckFile.close();
     printStartGameMessage();
     printEnterTeamSizeMessage();
     int numberOfPlayers;
@@ -203,4 +205,19 @@ void Mtmchkin::fillLeaderboard(){
 
 int Mtmchkin::getNumberOfRounds() const{
     return m_numberOfRounds;
+}
+
+Mtmchkin::~Mtmchkin()
+{
+    while (m_players.size() > 0)
+    {
+        delete m_players.back();
+        m_players.pop_back();
+    }
+
+    while (m_cards.size() > 0)
+    {
+        delete m_cards.back();
+        m_cards.pop_back();
+    }
 }

@@ -30,7 +30,7 @@ public:
     * Destructor of the Player class
     * 
     */
-    ~Player() = default;
+    virtual ~Player() = default;
 
     /*
     *

@@ -7,6 +7,7 @@ Merchant::Merchant(std::string name) : Card(name){}
 void Merchant::applyEncounter(Player& player){
     int playerChoice = 0;
     bool validInput = true;
+    int coinsPaid = 0;
     printMerchantInitialMessageForInteractiveEncounter(std::cout, player.getName(), player.getCoins());
     do{
         std::cin >> playerChoice;
@@ -20,6 +21,7 @@ void Merchant::applyEncounter(Player& player){
         case BUY_HP:
             if(player.pay(HP_POTION_COST)){
                 player.heal(HEAL);
+                coinsPaid += HP_POTION_COST;
             }else{
                 printMerchantInsufficientCoins(std::cout);
             }
@@ -27,12 +29,12 @@ void Merchant::applyEncounter(Player& player){
         case BUY_FORCE:
             if(player.pay(FORCE_POTION_COST)){
                 player.buff(FORCE_BUFF);
+                coinsPaid += FORCE_POTION_COST;
             }else{
                 printMerchantInsufficientCoins(std::cout);
             }
             break;
     }
-    printMerchantSummary(std::cout, player.getName(), playerChoice,
-     (playerChoice == BUY_HP) ? HP_POTION_COST : FORCE_POTION_COST);
+    printMerchantSummary(std::cout, player.getName(), playerChoice, coinsPaid);
     
 }

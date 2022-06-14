@@ -15,7 +15,7 @@ Player::Player(const string name, const int maxHP, const int force) :
 m_name(name),
 m_level(minLevel),
 m_healthPoints(minHealth),
-m_coins(minCoins)
+m_coins(DEFUALT_COINS)
 {
     if(maxHP > 0 ){
         m_healthPoints = maxHP;
@@ -124,10 +124,8 @@ void Player::knockOut()
     m_healthPoints = 0;
 }
 
-bool operator<(const Player& player1, const Player& player2){
-    return player1.getLevel() < player2.getLevel();
-}
-
-bool operator>(const Player& player1, const Player& player2){
-    return player1.getLevel() > player2.getLevel();
+void Player::weaken(){
+    if(m_force > 0){
+        m_force--;
+    }
 }

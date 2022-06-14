@@ -143,6 +143,8 @@ public:
     */
     virtual int getAttackStrength() const;
 
+    void weaken();
+
 private:
 
     friend std::ostream& operator<<(std::ostream& os, const Player& player1);
@@ -160,13 +162,7 @@ protected:
     static const int minCoins = 0;
     static const int defaultForce = 5;
     static const int defaultMaxHp = 100;
+    static const int DEFUALT_COINS = 10;
 };
-
-/*
-* boolean operator to compare players based on their level
-*/
-bool operator<(const Player& player1, const Player& player2);
-
-bool operator<(const Player& player1, const Player& player2);
 
 #endif //EX4_Card_H

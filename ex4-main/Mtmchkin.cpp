@@ -1,6 +1,6 @@
 #include "Mtmchkin.h"
 #include "Exception.h"
-#include "Utilities.h"
+#include "utilities.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -10,6 +10,8 @@
 Mtmchkin::Mtmchkin(const std::string fileName)
 {
     m_numberOfRounds = 0;
+    m_playersAtMaxLevel = 0;
+    m_playersDead = 0;
     m_isGameOver = false;
     std::fstream cardsDeckFile;
     cardsDeckFile.open(fileName, std::ios::in);
@@ -23,7 +25,7 @@ Mtmchkin::Mtmchkin(const std::string fileName)
         // Should instead keep a set of strings with the names and use the function find() to see if the name from the file is in the set, and also a switch case might be nicer than all of the 
         // if elses, same with the players types :)
         if (cardType != "Fairy" && cardType != "Goblin" && cardType != "Vampire" && cardType != "Barfight" && cardType != "Dragon" 
-                                && cardType != "Merchant" && cardType != "pitfall" && cardType != "Treasure"){
+                                && cardType != "Merchant" && cardType != "Pitfall" && cardType != "Treasure"){
             while(m_cards.size() > 0)
             {
                 m_cards.pop_front(); //clean storage
@@ -81,17 +83,21 @@ Mtmchkin::Mtmchkin(const std::string fileName)
         printEnterTeamSizeMessage();
         std::cin >> numberOfPlayers;
     }
+    for(int i=0; i<numberOfPlayers; i++){
+        m_leaderboard.push_back(nullptr);
+    }
     string name;
     string playerType;
     bool startOver = false;
     bool playerAdded = false;
     for (int playerIndex = 0; playerIndex < numberOfPlayers; playerIndex++)
     {
+        printInsertPlayerMessage();
         playerAdded = false;
         while(playerAdded == false)
         {
             startOver = false;
-            printInsertPlayerMessage();
+            
             std::cin >> name;
             std::cin >> playerType;
             for (char c : name)
@@ -103,11 +109,11 @@ Mtmchkin::Mtmchkin(const std::string fileName)
                 }
             }
             if(startOver){
-                break;
+                continue;
             }
             if(playerType != "Fighter" && playerType != "Rogue" && playerType != "Wizard"){
                 printInvalidClass();
-                    continue;
+                continue;
             }
             //now we know the input is valid
 
@@ -126,55 +132,75 @@ Mtmchkin::Mtmchkin(const std::string fileName)
                 playerAdded = true;
                 continue;
             }
-            bool shouldntGetHere = false;
-            assert(shouldntGetHere);
+            // bool shouldntGetHere = false;
+            // assert(shouldntGetHere);
         }
 
     }
 }
 
 void Mtmchkin::playRound(){
-    if(isGameOver()){
-            printGameEndMessage();
-            printGameLeaderboard();
-    }
     m_numberOfRounds++;
     printRoundStartMessage(m_numberOfRounds);
     for(Player* currentPlayer : m_players){
-        if(currentPlayer->isKnockedOut()){
+        if(currentPlayer->isKnockedOut() || currentPlayer->getLevel() == MAX_LEVEL){
             continue;
         }
         Card* currentCard = m_cards.front();
         printTurnStartMessage(currentPlayer->getName());
         currentCard->applyEncounter(*currentPlayer);
+        fillLeaderboard();
+        if(currentPlayer->isKnockedOut() || currentPlayer->getLevel() == MAX_LEVEL){
+            updateLeaderboard(currentPlayer);
+        }
+        if(isGameOver()){
+            printGameEndMessage();
+        }
         m_cards.pop_front();
         m_cards.push_back(currentCard);
     }
 }
 
 bool Mtmchkin::isGameOver(){
+    m_isGameOver = true;
     for(Player* player : m_players){
-        if(!player->isKnockedOut()){
+        if((!player->isKnockedOut()) && (player->getLevel() != MAX_LEVEL)){
             m_isGameOver = false;
-        }
-        if(player->getLevel() == MAX_LEVEL){
-            m_isGameOver = true;
             break;
         }
     }
     return m_isGameOver;
 }
 
-void Mtmchkin::printGameLeaderboard(){
-    printLeaderBoardStartMessage();
+void Mtmchkin::printLeaderBoard() const{
     int ranking = 1;
-    // initialize leaderboard
-    for(Player* playerPtr : m_players){
-        m_leaderBoard.push(playerPtr);
+    printLeaderBoardStartMessage();
+    for(Player* player : m_leaderboard){
+        printPlayerLeaderBoard(ranking, *player);
+        ranking++;
     }
-    while(!m_leaderBoard.empty()){
-        printPlayerLeaderBoard(ranking, (*m_leaderBoard.top()));
-        m_leaderBoard.pop();
-        ++ranking;
+}
+
+void Mtmchkin::updateLeaderboard(Player* player){
+    if(player->isKnockedOut()){
+        m_leaderboard[m_leaderboard.size()-1-m_playersDead] = player;
+        m_playersDead++;
+    }else{
+        m_leaderboard[m_playersAtMaxLevel] = player;
+        m_playersAtMaxLevel++;
     }
+}
+
+void Mtmchkin::fillLeaderboard(){
+    int fillIndex = m_playersAtMaxLevel;
+    for(Player* player : m_players){
+        if(!player->isKnockedOut() && player->getLevel() != MAX_LEVEL){
+            m_leaderboard[fillIndex] = player;
+            fillIndex++;
+        }
+    }
+}
+
+int Mtmchkin::getNumberOfRounds() const{
+    return m_numberOfRounds;
 }

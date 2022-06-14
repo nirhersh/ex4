@@ -33,8 +33,6 @@ private:
     int m_force;
     int m_loot;
     int m_damage;
-
-    friend std::ostream& operator<<(std::ostream& os, const BattleCard& card);
 };
 
 

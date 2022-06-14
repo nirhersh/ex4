@@ -21,10 +21,8 @@ public:
 
     void applyEncounter(Player& player) override;
 
-protected:
-    void printCard(std::ostream& os) const override;
-
 private:
+    int m_damage;
     static const int HP_LOSS = 10;
     static const std::string BARFIGHT_NAME;
 };

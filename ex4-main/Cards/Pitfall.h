@@ -2,7 +2,7 @@
 #define Pitfall_H
 
 #include "Card.h"
-#include "../PLayers/Rogue.h"
+#include "../Players/Rogue.h"
 #include "../utilities.h"
 #include <string>
 

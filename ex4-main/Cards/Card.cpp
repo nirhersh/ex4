@@ -19,6 +19,10 @@ std::string Card::getName() const{
     return m_name;
 }
 
+void Card::printCard(std::ostream& os) const{
+    return;
+}
+
 std::ostream& operator<<(std::ostream& os, const Card& card){
     printCardDetails(os, card.getName());
     card.printCard(os);

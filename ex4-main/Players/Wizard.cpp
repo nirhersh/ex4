@@ -1,5 +1,8 @@
 #include "Wizard.h"
 
+Wizard::Wizard(const string name, const int maxHP, const int force)
+                : Player(name, maxHP, force) {}
+
 void Wizard::heal(const int hp){
     if(hp <= 0){
         return;
@@ -11,7 +14,7 @@ void Wizard::heal(const int hp){
     }
 }
 
-void Wizard::print(std::ostream& os) 
+void Wizard::print(std::ostream& os) const
 {
     printPlayerDetails(os, m_name, "Wizard", m_level, m_force, m_healthPoints, m_coins);
 }

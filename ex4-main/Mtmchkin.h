@@ -11,13 +11,14 @@
 #include "Cards/Pitfall.h"
 #include "Cards/Merchant.h"
 #include "Cards/Treasure.h"
-#include "Cards/vampire.h"
+#include "Cards/Vampire.h"
 #include "Players/Fighter.h"
 #include "Players/Wizard.h"
 #include "Players/Rogue.h"
 #include <vector>
 #include <queue>
 #include <deque>
+#include <set>
 class Mtmchkin{
 
 public:
@@ -64,22 +65,18 @@ public:
     */
     int getNumberOfRounds() const;
 
-    void printGameLeaderboard();
-
-    class ComparePlayers{
-    public:
-        bool operator()(const Player* player1, const Player* player2) const{
-            return (*player1) < (*player2);
-        }
-    };
-
 private:
     std::vector<Player*> m_players;
+    std::vector<Player*> m_leaderboard;
     std::deque<Card*> m_cards;
-    std::priority_queue<Player*, std::vector<Player*>, ComparePlayers> m_leaderBoard;
     bool m_isGameOver;
     int m_numberOfRounds;
+    int m_playersAtMaxLevel;
+    int m_playersDead;
     static const int MAX_LEVEL = 10;
+    //static const std::set<char*> cardTypes
+    void updateLeaderboard(Player* player);
+    void fillLeaderboard();
 };
 
 #endif /* MTMCHKIN_H_ */

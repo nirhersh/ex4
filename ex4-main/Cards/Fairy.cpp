@@ -9,7 +9,7 @@ void Fairy::applyEncounter(Player& player){
     try{
         Wizard& wizard = dynamic_cast<Wizard&>(player);
         wizard.heal(HP_BOOST);
-    }catch(std::bad_cast e){
+    }catch(std::bad_cast& e){
         isWizard = false;
     }
     printFairyMessage(isWizard);

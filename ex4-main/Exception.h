@@ -19,8 +19,8 @@ public:
     DeckFileFormatError(int errorLine) : m_errorLine(errorLine){}
 
     const char* what() const throw() override{
-        std::string errorStr = "Deck File Error: File format error in line";
-        errorStr += std::to_string(m_errorLine);
+        std::string line = std::to_string(m_errorLine);
+        std::string errorStr = "Deck File Error: File format error in line " + line;
         return errorStr.c_str();
     }
 private:

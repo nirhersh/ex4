@@ -6,10 +6,10 @@ Pitfall::Pitfall(std::string name) : Card(name){}
 
 void Pitfall::applyEncounter(Player& player){
     bool isRogue = false;
-    try{
-        Rogue& rogue = dynamic_cast<Rogue&>(player);
+    Rogue* rogue = dynamic_cast<Rogue*>(&player);
+    if(rogue != nullptr){
         isRogue = true;
-    }catch(std::bad_cast e){
+    }else{
         player.damage(PITFALL_DAMAGE);
     }
     printPitfallMessage(isRogue);

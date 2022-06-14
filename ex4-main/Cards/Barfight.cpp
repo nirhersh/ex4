@@ -6,10 +6,10 @@ Barfight::Barfight(std::string name) : Card(name){}
 
 void Barfight::applyEncounter(Player& player){
     bool isFighter = false;
-    try{
-        const Fighter& fighter = dynamic_cast<const Fighter&>(player);
+    const Fighter* fighter = dynamic_cast<const Fighter*>(&player);
+    if(fighter != nullptr){
         isFighter = true;
-    }catch(std::bad_cast e){
+    }else{
         player.damage(HP_LOSS);
     }
     printBarfightMessage(isFighter);

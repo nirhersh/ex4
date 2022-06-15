@@ -9,6 +9,7 @@
 
 Mtmchkin::Mtmchkin(const std::string fileName)
 {
+    printStartGameMessage();
     m_numberOfRounds = 0;
     m_playersAtMaxLevel = 0;
     m_playersDead = 0;
@@ -84,7 +85,6 @@ Mtmchkin::Mtmchkin(const std::string fileName)
         throw DeckFileInvalidSize();
     }
     cardsDeckFile.close();
-    printStartGameMessage();
     printEnterTeamSizeMessage();
     int numberOfPlayers;
     std::cin >> numberOfPlayers;

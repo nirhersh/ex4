@@ -13,6 +13,9 @@ public:
     */
     Barfight(std::string name = BARFIGHT_NAME);
 
+    /*
+    * Copy C'tor of Barfight class
+    */
     Barfight(const Barfight&) = default;
 
     ~Barfight() = default;

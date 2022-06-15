@@ -19,6 +19,7 @@
 #include <queue>
 #include <deque>
 #include <set>
+#include <memory>
 class Mtmchkin{
 
 public:
@@ -31,6 +32,10 @@ public:
     *      A new instance of Mtmchkin.
     */
     Mtmchkin(const std::string fileName);
+
+    Mtmchkin(const Mtmchkin&) = delete;
+
+    Mtmchkin& operator=(const Mtmchkin&) = delete;
     
     /*
     * Play the next Round of the game - according to the instruction in the exercise document.
@@ -58,7 +63,7 @@ public:
     bool isGameOver();
 
 
-    ~Mtmchkin();
+    //~Mtmchkin();
     
 	/*
     *  Returns the number of rounds played.
@@ -69,16 +74,16 @@ public:
     int getNumberOfRounds() const;
 
 private:
-    std::vector<Player*> m_players;
-    std::vector<Player*> m_leaderboard;
-    std::deque<Card*> m_cards;
+    std::vector<std::shared_ptr<Player>> m_players;
+    std::vector<std::shared_ptr<Player>> m_leaderboard;
+    std::queue<std::unique_ptr<Card>> m_cards;
     bool m_isGameOver;
     int m_numberOfRounds;
     int m_playersAtMaxLevel;
     int m_playersDead;
     static const int MAX_LEVEL = 10;
     //static const std::set<char*> cardTypes
-    void updateLeaderboard(Player* player);
+    void updateLeaderboard(std::shared_ptr<Player>);
     void fillLeaderboard();
 };
 

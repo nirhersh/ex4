@@ -26,52 +26,60 @@ Mtmchkin::Mtmchkin(const std::string fileName)
         // if elses, same with the players types :)
         if (cardType != "Fairy" && cardType != "Goblin" && cardType != "Vampire" && cardType != "Barfight" && cardType != "Dragon" 
                                 && cardType != "Merchant" && cardType != "Pitfall" && cardType != "Treasure"){
-        while (m_cards.size() > 0){
-            delete m_cards.back();
-            m_cards.pop_back();
-        }
+            // while (m_cards.size() > 0){
+            //     delete m_cards.back();
+            //     m_cards.pop_back();
+            // }
             cardsDeckFile.close();
             throw DeckFileFormatError(line);
             }
         line++;
         if(cardType == "Fairy"){
-            m_cards.push_back(new Fairy());
+            std::unique_ptr<Card> card(new Fairy());
+            m_cards.push(std::move(card));
             continue;
         }
         if(cardType == "Goblin"){
-            m_cards.push_back(new Goblin());
+            std::unique_ptr<Card> card(new Goblin());
+            m_cards.push(std::move(card));
             continue;
         }
         if(cardType == "Vampire"){
-            m_cards.push_back(new Vampire());
+            std::unique_ptr<Card> card(new Vampire());
+            m_cards.push(std::move(card));
             continue;
         }
         if(cardType == "Barfight"){
-            m_cards.push_back(new Barfight());
+            std::unique_ptr<Card> card(new Barfight());
+            m_cards.push(std::move(card));
             continue;
         }
         if(cardType == "Dragon"){
-            m_cards.push_back(new Dragon());
+            std::unique_ptr<Card> card(new Dragon());
+            m_cards.push(std::move(card));
             continue;
         }
         if(cardType == "Merchant"){
-            m_cards.push_back(new Merchant());
+            std::unique_ptr<Card> card(new Merchant());
+            m_cards.push(std::move(card));
             continue;
         }
         if(cardType == "Pitfall"){
-            m_cards.push_back(new Pitfall());
+            std::unique_ptr<Card> card(new Pitfall());
+            m_cards.push(std::move(card));
             continue;
         }
         if(cardType == "Treasure"){
-            m_cards.push_back(new Treasure());
+            std::unique_ptr<Card> card(new Treasure());
+            m_cards.push(std::move(card));
             continue;
         }
     }
     if(line < 5){
-        while (m_cards.size() > 0){
-            delete m_cards.back();
-            m_cards.pop_back();
-        }
+        // while (m_cards.size() > 0){
+        //     delete m_cards.back();
+        //     m_cards.pop_back();
+        // }
         cardsDeckFile.close();
         throw DeckFileInvalidSize();
     }
@@ -120,17 +128,17 @@ Mtmchkin::Mtmchkin(const std::string fileName)
             //now we know the input is valid
 
             if(playerType == "Rogue"){
-                m_players.push_back(new Rogue(name));
+                m_players.push_back(std::shared_ptr<Player>(new Rogue(name)));
                 playerAdded = true;
                 continue;
             }
             if(playerType == "Fighter"){
-                m_players.push_back(new Fighter(name));
+                m_players.push_back(std::shared_ptr<Player>(new Fighter(name)));
                 playerAdded = true;
                 continue;
             }
             if(playerType == "Wizard"){
-                m_players.push_back(new Wizard(name));
+                m_players.push_back(std::shared_ptr<Player>(new Wizard(name)));
                 playerAdded = true;
                 continue;
             }
@@ -144,13 +152,12 @@ Mtmchkin::Mtmchkin(const std::string fileName)
 void Mtmchkin::playRound(){
     m_numberOfRounds++;
     printRoundStartMessage(m_numberOfRounds);
-    for(Player* currentPlayer : m_players){
+    for(std::shared_ptr<Player> currentPlayer : m_players){
         if(currentPlayer->isKnockedOut() || currentPlayer->getLevel() == MAX_LEVEL){
             continue;
         }
-        Card* currentCard = m_cards.front();
         printTurnStartMessage(currentPlayer->getName());
-        currentCard->applyEncounter(*currentPlayer);
+        m_cards.front()->applyEncounter(*currentPlayer);
         fillLeaderboard();
         if(currentPlayer->isKnockedOut() || currentPlayer->getLevel() == MAX_LEVEL){
             updateLeaderboard(currentPlayer);
@@ -158,14 +165,15 @@ void Mtmchkin::playRound(){
         if(isGameOver()){
             printGameEndMessage();
         }
-        m_cards.pop_front();
-        m_cards.push_back(currentCard);
+        std::unique_ptr<Card> temp = std::move(m_cards.front());
+        m_cards.pop();
+        m_cards.push(std::move(temp));
     }
 }
 
 bool Mtmchkin::isGameOver(){
     m_isGameOver = true;
-    for(Player* player : m_players){
+    for(std::shared_ptr<Player> player : m_players){
         if((!player->isKnockedOut()) && (player->getLevel() != MAX_LEVEL)){
             m_isGameOver = false;
             break;
@@ -177,13 +185,13 @@ bool Mtmchkin::isGameOver(){
 void Mtmchkin::printLeaderBoard() const{
     int ranking = 1;
     printLeaderBoardStartMessage();
-    for(Player* player : m_leaderboard){
+    for(std::shared_ptr<Player> player : m_leaderboard){
         printPlayerLeaderBoard(ranking, *player);
         ranking++;
     }
 }
 
-void Mtmchkin::updateLeaderboard(Player* player){
+void Mtmchkin::updateLeaderboard(std::shared_ptr<Player> player){
     if(player->isKnockedOut()){
         m_leaderboard[m_leaderboard.size()-1-m_playersDead] = player;
         m_playersDead++;
@@ -195,7 +203,7 @@ void Mtmchkin::updateLeaderboard(Player* player){
 
 void Mtmchkin::fillLeaderboard(){
     int fillIndex = m_playersAtMaxLevel;
-    for(Player* player : m_players){
+    for(std::shared_ptr<Player> player : m_players){
         if(!player->isKnockedOut() && player->getLevel() != MAX_LEVEL){
             m_leaderboard[fillIndex] = player;
             fillIndex++;
@@ -207,17 +215,17 @@ int Mtmchkin::getNumberOfRounds() const{
     return m_numberOfRounds;
 }
 
-Mtmchkin::~Mtmchkin()
-{
-    while (m_players.size() > 0)
-    {
-        delete m_players.back();
-        m_players.pop_back();
-    }
+// Mtmchkin::~Mtmchkin()
+// {
+//     while (m_players.size() > 0)
+//     {
+//         delete m_players.back();
+//         m_players.pop_back();
+//     }
 
-    while (m_cards.size() > 0)
-    {
-        delete m_cards.back();
-        m_cards.pop_back();
-    }
-}
+//     while (m_cards.size() > 0)
+//     {
+//         delete m_cards.back();
+//         m_cards.pop_back();
+//     }
+// }

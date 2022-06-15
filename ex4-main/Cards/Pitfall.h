@@ -11,7 +11,7 @@ public:
     /*
     * C'tor of Pitfall class
     */
-    Pitfall(std::string name = PITFALL_NAME);
+    Pitfall(std::string name = PITFALL_NAME, int damage = PITFALL_DAMAGE);
 
     Pitfall(const Pitfall&) = default;
 
@@ -22,6 +22,7 @@ public:
     void applyEncounter(Player& player) override;
 
 private:
+    int m_damage;
     static const int PITFALL_DAMAGE = 10;
     static const std::string PITFALL_NAME;
 };

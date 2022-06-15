@@ -11,7 +11,7 @@ public:
     /*
     * C'tor of Fairy class
     */
-    Fairy(std::string name = FAIRY_NAME);
+    Fairy(std::string name = FAIRY_NAME, int heal = HP_BOOST);
 
     Fairy(const Fairy&) = default;
 
@@ -22,6 +22,7 @@ public:
     void applyEncounter(Player& player) override;
 
 private:
+    int m_heal;
     static const int HP_BOOST = 10;
     static const std::string FAIRY_NAME;
 };

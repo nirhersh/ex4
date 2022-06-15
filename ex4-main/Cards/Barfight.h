@@ -11,7 +11,7 @@ public:
     /*
     * C'tor of Barfight class
     */
-    Barfight(std::string name = BARFIGHT_NAME);
+    Barfight(std::string name = BARFIGHT_NAME, int damage = HP_LOSS);
 
     /*
     * Copy C'tor of Barfight class

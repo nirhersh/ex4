@@ -2,7 +2,7 @@
 
 const std::string Barfight::BARFIGHT_NAME = "Barfight";
 
-Barfight::Barfight(std::string name) : Card(name){}
+Barfight::Barfight(std::string name, int damage) : Card(name), m_damage(damage){}
 
 void Barfight::applyEncounter(Player& player){
     bool isFighter = false;
@@ -10,7 +10,7 @@ void Barfight::applyEncounter(Player& player){
     if(fighter != nullptr){
         isFighter = true;
     }else{
-        player.damage(HP_LOSS);
+        player.damage(m_damage);
     }
     printBarfightMessage(isFighter);
 }

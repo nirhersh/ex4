@@ -10,7 +10,7 @@ public:
     /*
     * C'tor of Treasure class
     */
-    Treasure(std::string name = TREASURE_NAME);
+    Treasure(std::string name = TREASURE_NAME, int coins = TREASURE_COINS);
 
     Treasure(const Treasure&) = default;
 
@@ -21,6 +21,7 @@ public:
     void applyEncounter(Player& player) override;
 
 private:
+    int m_coins;
     static const int TREASURE_COINS = 10;
     static const std::string TREASURE_NAME;
 };

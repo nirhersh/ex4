@@ -2,7 +2,7 @@
 
 const std::string Pitfall::PITFALL_NAME = "Pitfall";
 
-Pitfall::Pitfall(std::string name) : Card(name){}
+Pitfall::Pitfall(std::string name, int damage) : Card(name), m_damage(damage){}
 
 void Pitfall::applyEncounter(Player& player){
     bool isRogue = false;
@@ -10,7 +10,7 @@ void Pitfall::applyEncounter(Player& player){
     if(rogue != nullptr){
         isRogue = true;
     }else{
-        player.damage(PITFALL_DAMAGE);
+        player.damage(m_damage);
     }
     printPitfallMessage(isRogue);
 }

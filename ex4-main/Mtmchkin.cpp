@@ -6,85 +6,124 @@
 #include <string>
 #include <assert.h>
 
+static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<Card>>& m_cards);
+static int numberOfPlayersInitialization();
+static void playerInitialization(std::vector<std::unique_ptr<Player>>& m_players);
+static void addDragonCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+static void addPitfallCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+static void addBarfightCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+static void addFairyCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+static void addGoblinCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+static void addMerchantCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+static void addTreasureCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+static void addVampireCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+
+enum CARD_TYPES{
+    cardBarfight,
+    cardFairy,
+    cardDragon,
+    cardGoblin,
+    cardMerchant,
+    cardPitfall,
+    cardTreasure,
+    cardVampire };
+
+enum PLAYER_TYPES{
+    playereFighter,
+    playerWizard,
+    playerRogue};
+
+static std::map<std::string, CARD_TYPES> CARDS;
+static std::map<std::string, PLAYER_TYPES> PLAYERS;
+
+static void initializeCardMap()
+{
+    CARDS["Barfight"] = cardBarfight;
+    CARDS["Dragon"] = cardDragon;
+    CARDS["Fairy"] = cardFairy;
+    CARDS["Goblin"] = cardGoblin;
+    CARDS["Merchant"] = cardMerchant;
+    CARDS["Pitfall"] = cardPitfall;
+    CARDS["Treasure"] = cardTreasure;
+    CARDS["Vampire"] = cardVampire;
+    
+}
+
+static void initializePlayerMap()
+{
+    PLAYERS["Fighter"] = playereFighter;
+    PLAYERS["Rogue"] = playerRogue;
+    PLAYERS["Wizard"] = playerWizard;
+}
+
 
 Mtmchkin::Mtmchkin(const std::string fileName)
 {
+    initializeCardMap();
+    initializePlayerMap();
     printStartGameMessage();
     m_numberOfRounds = 0;
-    m_playersAtMaxLevel = 0;
-    m_playersDead = 0;
     m_isGameOver = false;
+    cardInitialization(fileName, m_cards);
+    playerInitialization(m_playersInGame);
+    
+}
+
+static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<Card>>& m_cards)
+{
     std::fstream cardsDeckFile;
     cardsDeckFile.open(fileName, std::ios::in);
     if(!cardsDeckFile.is_open()){
         throw DeckFileNotFound();
     }
-    int line = 1; // should I start countind the lines from 1 or 0?
+    int line = 1; 
     string cardType;
     while(std::getline(cardsDeckFile, cardType))
     {
-        // Should instead keep a set of strings with the names and use the function find() to see if the name from the file is in the set, and also a switch case might be nicer than all of the 
-        // if elses, same with the players types :)
-        if (cardType != "Fairy" && cardType != "Goblin" && cardType != "Vampire" && cardType != "Barfight" && cardType != "Dragon" 
-                                && cardType != "Merchant" && cardType != "Pitfall" && cardType != "Treasure"){
-            // while (m_cards.size() > 0){
-            //     delete m_cards.back();
-            //     m_cards.pop_back();
-            // }
+        if(CARDS.count(cardType) == 0){
             cardsDeckFile.close();
             throw DeckFileFormatError(line);
-            }
+        }
         line++;
-        if(cardType == "Fairy"){
-            std::unique_ptr<Card> card(new Fairy());
-            m_cards.push(std::move(card));
-            continue;
-        }
-        if(cardType == "Goblin"){
-            std::unique_ptr<Card> card(new Goblin());
-            m_cards.push(std::move(card));
-            continue;
-        }
-        if(cardType == "Vampire"){
-            std::unique_ptr<Card> card(new Vampire());
-            m_cards.push(std::move(card));
-            continue;
-        }
-        if(cardType == "Barfight"){
-            std::unique_ptr<Card> card(new Barfight());
-            m_cards.push(std::move(card));
-            continue;
-        }
-        if(cardType == "Dragon"){
-            std::unique_ptr<Card> card(new Dragon());
-            m_cards.push(std::move(card));
-            continue;
-        }
-        if(cardType == "Merchant"){
-            std::unique_ptr<Card> card(new Merchant());
-            m_cards.push(std::move(card));
-            continue;
-        }
-        if(cardType == "Pitfall"){
-            std::unique_ptr<Card> card(new Pitfall());
-            m_cards.push(std::move(card));
-            continue;
-        }
-        if(cardType == "Treasure"){
-            std::unique_ptr<Card> card(new Treasure());
-            m_cards.push(std::move(card));
-            continue;
+        switch (CARDS[cardType])
+        {
+        case cardDragon:
+            addDragonCard(m_cards);
+            break;
+        case cardBarfight:
+            addBarfightCard(m_cards);
+            break;
+        case cardFairy:
+            addFairyCard(m_cards);
+            break;  
+        case cardGoblin:
+            addGoblinCard(m_cards);
+            break;
+        case cardMerchant:
+            addMerchantCard(m_cards);
+            break;
+        case cardVampire:
+            addVampireCard(m_cards);
+            break;
+        case cardTreasure:
+            addTreasureCard(m_cards);
+            break;
+        case cardPitfall:
+            addPitfallCard(m_cards);
+            break;
+        default:
+            break;
         }
     }
     if(line < 5){
-        // while (m_cards.size() > 0){
-        //     delete m_cards.back();
-        //     m_cards.pop_back();
-        // }
         cardsDeckFile.close();
         throw DeckFileInvalidSize();
     }
     cardsDeckFile.close();
+}
+
+static int numberOfPlayersInitialization()
+{
     printEnterTeamSizeMessage();
     int numberOfPlayers;
     std::cin >> numberOfPlayers;
@@ -93,13 +132,14 @@ Mtmchkin::Mtmchkin(const std::string fileName)
         printEnterTeamSizeMessage();
         std::cin >> numberOfPlayers;
     }
-    for(int i=0; i<numberOfPlayers; i++){
-        m_leaderboard.push_back(nullptr);
-    }
-    string name;
-    string playerType;
-    bool startOver = false;
-    bool playerAdded = false;
+    return numberOfPlayers;
+}
+
+static void playerInitialization(std::vector<std::unique_ptr<Player>>& m_playersInGame)
+{
+    int numberOfPlayers = numberOfPlayersInitialization();
+    string name, playerType;
+    bool startOver = false, playerAdded = false;
     for (int playerIndex = 0; playerIndex < numberOfPlayers; playerIndex++)
     {
         printInsertPlayerMessage();
@@ -107,7 +147,6 @@ Mtmchkin::Mtmchkin(const std::string fileName)
         while(playerAdded == false)
         {
             startOver = false;
-            
             std::cin >> name;
             std::cin >> playerType;
             for (char c : name)
@@ -121,46 +160,52 @@ Mtmchkin::Mtmchkin(const std::string fileName)
             if(startOver){
                 continue;
             }
-            if(playerType != "Fighter" && playerType != "Rogue" && playerType != "Wizard"){
+            if(PLAYERS.count(playerType) == 0){
                 printInvalidClass();
                 continue;
             }
             //now we know the input is valid
-
-            if(playerType == "Rogue"){
-                m_players.push_back(std::shared_ptr<Player>(new Rogue(name)));
-                playerAdded = true;
-                continue;
+            switch (PLAYERS[playerType])
+            {
+                case playerRogue:{
+                    std::unique_ptr<Player> player(new Rogue(name));
+                    m_playersInGame.push_back(std::move(player));
+                    playerAdded = true;
+                    break;
+                }
+                case playerWizard:{
+                    std::unique_ptr<Player> player(new Wizard(name));
+                    m_playersInGame.push_back(std::move(player));
+                    playerAdded = true;
+                    break;
+                }
+                case playereFighter: {
+                    std::unique_ptr<Player> player(new Fighter(name));
+                    m_playersInGame.push_back(std::move(player));
+                    playerAdded = true;
+                    break;
+                }
+                // bool shouldntGetHere = false;
+                // assert(shouldntGetHere);
             }
-            if(playerType == "Fighter"){
-                m_players.push_back(std::shared_ptr<Player>(new Fighter(name)));
-                playerAdded = true;
-                continue;
-            }
-            if(playerType == "Wizard"){
-                m_players.push_back(std::shared_ptr<Player>(new Wizard(name)));
-                playerAdded = true;
-                continue;
-            }
-            // bool shouldntGetHere = false;
-            // assert(shouldntGetHere);
         }
-
+    
     }
 }
 
 void Mtmchkin::playRound(){
     m_numberOfRounds++;
     printRoundStartMessage(m_numberOfRounds);
-    for(std::shared_ptr<Player> currentPlayer : m_players){
-        if(currentPlayer->isKnockedOut() || currentPlayer->getLevel() == MAX_LEVEL){
+    for(std::unique_ptr<Player>& currentPlayer : m_playersInGame){
+        if(currentPlayer == nullptr){
             continue;
         }
         printTurnStartMessage(currentPlayer->getName());
         m_cards.front()->applyEncounter(*currentPlayer);
-        fillLeaderboard();
-        if(currentPlayer->isKnockedOut() || currentPlayer->getLevel() == MAX_LEVEL){
-            updateLeaderboard(currentPlayer);
+        if(currentPlayer->isKnockedOut()){
+            m_playersDead.insert(m_playersDead.begin(), std::move(currentPlayer));
+        }else if(currentPlayer->getLevel() == MAX_LEVEL){
+            m_playersWon.push_back(std::move(currentPlayer));
         }
         if(isGameOver()){
             printGameEndMessage();
@@ -171,43 +216,30 @@ void Mtmchkin::playRound(){
     }
 }
 
+
+
 bool Mtmchkin::isGameOver(){
-    m_isGameOver = true;
-    for(std::shared_ptr<Player> player : m_players){
-        if((!player->isKnockedOut()) && (player->getLevel() != MAX_LEVEL)){
-            m_isGameOver = false;
-            break;
-        }
-    }
+    m_isGameOver = (m_playersInGame.size() == (m_playersDead.size() + m_playersWon.size()));
     return m_isGameOver;
 }
 
 void Mtmchkin::printLeaderBoard() const{
     int ranking = 1;
     printLeaderBoardStartMessage();
-    for(std::shared_ptr<Player> player : m_leaderboard){
+    for(const std::unique_ptr<Player>& player : m_playersWon){
         printPlayerLeaderBoard(ranking, *player);
         ranking++;
     }
-}
-
-void Mtmchkin::updateLeaderboard(std::shared_ptr<Player> player){
-    if(player->isKnockedOut()){
-        m_leaderboard[m_leaderboard.size()-1-m_playersDead] = player;
-        m_playersDead++;
-    }else{
-        m_leaderboard[m_playersAtMaxLevel] = player;
-        m_playersAtMaxLevel++;
-    }
-}
-
-void Mtmchkin::fillLeaderboard(){
-    int fillIndex = m_playersAtMaxLevel;
-    for(std::shared_ptr<Player> player : m_players){
-        if(!player->isKnockedOut() && player->getLevel() != MAX_LEVEL){
-            m_leaderboard[fillIndex] = player;
-            fillIndex++;
+    for(const std::unique_ptr<Player>& player : m_playersInGame){
+        if(player == nullptr){
+            continue;
         }
+        printPlayerLeaderBoard(ranking, *player);
+        ranking++;
+    }
+    for(const std::unique_ptr<Player>& player : m_playersDead){
+        printPlayerLeaderBoard(ranking, *player);
+        ranking++;
     }
 }
 
@@ -215,17 +247,50 @@ int Mtmchkin::getNumberOfRounds() const{
     return m_numberOfRounds;
 }
 
-// Mtmchkin::~Mtmchkin()
-// {
-//     while (m_players.size() > 0)
-//     {
-//         delete m_players.back();
-//         m_players.pop_back();
-//     }
+static void addDragonCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
+{
+    std::unique_ptr<Card> card(new Dragon());
+    cardsQueue.push(std::move(card));
+}
 
-//     while (m_cards.size() > 0)
-//     {
-//         delete m_cards.back();
-//         m_cards.pop_back();
-//     }
-// }
+static void addPitfallCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
+{
+    std::unique_ptr<Card> card(new Pitfall());
+    cardsQueue.push(std::move(card));
+}
+
+static void addBarfightCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
+{
+    std::unique_ptr<Card> card(new Barfight());
+    cardsQueue.push(std::move(card));
+}
+
+static void addFairyCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
+{
+    std::unique_ptr<Card> card(new Fairy());
+    cardsQueue.push(std::move(card));
+}
+
+static void addGoblinCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
+{
+    std::unique_ptr<Card> card(new Goblin());
+    cardsQueue.push(std::move(card));
+}
+
+static void addMerchantCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
+{
+    std::unique_ptr<Card> card(new Merchant());
+    cardsQueue.push(std::move(card));
+}
+
+static void addTreasureCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
+{
+    std::unique_ptr<Card> card(new Treasure());
+    cardsQueue.push(std::move(card));
+}
+
+static void addVampireCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
+{
+    std::unique_ptr<Card> card(new Vampire());
+    cardsQueue.push(std::move(card));
+}

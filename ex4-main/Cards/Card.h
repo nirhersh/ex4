@@ -24,7 +24,7 @@ public:
      *
      * @param player - The player.
     */
-    virtual void applyEncounter(Player& player) = 0;
+    virtual void applyEncounter(Player& player) const = 0;
 
     /*
     * Gets the card name

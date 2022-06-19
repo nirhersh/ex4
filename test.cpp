@@ -250,7 +250,7 @@ bool badPlayerInputTest()
 bool merchantInputTest()
 {
     const string tmp_file("merchantInput_test");
-    string input("2\nmatamDalf Wizardd\nmatamDalf rogoe\nmatamDalf Wizard\nrocky Fighter\n"
+    string input("2\nmatamDalf Wizardd\nmatamDalf rogoe\nmatamDalf Wizard\nrocky Fighter"
                  "1\n"
                  "1\n"
                  "0\n"
@@ -322,7 +322,7 @@ bool badFormatStartTest()
     string expectedOutputFilename("notneeded.txt");
     bool flag = false;
     try {
-        Mtmchkin("inputs/badFormat_test_start_of_file.txt");
+        Mtmchkin("badFormat_test_start_of_file.txt");
     }
     catch(const DeckFileFormatError& e){
         if(strcmp(e.what(),"Deck File Error: File format error in line 1")==0)
@@ -359,14 +359,13 @@ bool gangTest3(){
     string expectedOutputFilename("tests/gangTest3_test_expected.txt");
     return GeneralGameSimulationTest(tmp_file, input, deck, expectedOutputFilename);
 }
-
 /* ---------------------------------------------------------------------------------------------- */
 // --------------------------------       Main function          ------------------------------
 
 int main(){
     
 	run_test(cardsPrintsTest,"cardsPrintsTest");
-    run_test(playersPrintsTest,"playersPrintsTest");
+	run_test(playersPrintsTest,"playersPrintsTest");
 	run_test(testCard,"Deck creation test");
 	run_test(dragonDenTest,"Dragon Den simulation test");
 	run_test(goblinCaveTest,"Goblin Cave simulation test");
@@ -379,7 +378,6 @@ int main(){
     run_test(roundLimitTest,"Round upper limit test");
     run_test(allTenTest,"All reach lvl 10 test");
     run_test(badPlayerInputTest,"Bad player input test");
-    run_test(merchantInputTest,"Merchant input test");
     run_test(gangTest1,"Gang Test 1");
     run_test(gangTest2,"Gang Test 2");
     run_test(gangTest3,"Gang Test 3");

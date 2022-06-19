@@ -125,3 +125,12 @@ void Player::weaken(){
         m_force--;
     }
 }
+
+bool Player::getNeedToLose() const
+{
+    return m_needToLose;
+}
+void Player::setNeedToLose(bool lose)
+{
+    m_needToLose = lose;
+}

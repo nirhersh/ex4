@@ -17,7 +17,6 @@ public:
 
     Dragon& operator=(const Dragon& other) = default;
 
-
 private:
     static const int DRAGON_FORCE = 25;
     static const int DRAGON_LOOT = 1000;

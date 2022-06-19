@@ -4,7 +4,7 @@ const std::string Merchant::MERCHANT_NAME = "Merchant";
 
 Merchant::Merchant(std::string name) : Card(name){}
 
-void Merchant::applyEncounter(Player& player){
+void Merchant::applyEncounter(Player& player) const{
     int playerChoice = 0;
     int coinsPaid = 0;
     printMerchantInitialMessageForInteractiveEncounter(std::cout, player.getName(), player.getCoins());
@@ -30,7 +30,7 @@ void Merchant::applyEncounter(Player& player){
     printMerchantSummary(std::cout, player.getName(), playerChoice, coinsPaid);
 }
 
-void Merchant::getPlayersChoice(int& playerChoice){
+void Merchant::getPlayersChoice(int& playerChoice) const{
     bool validInput = true;
     do{
         std::cin >> playerChoice;

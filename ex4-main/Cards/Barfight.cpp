@@ -4,7 +4,7 @@ const std::string Barfight::BARFIGHT_NAME = "Barfight";
 
 Barfight::Barfight(std::string name, int damage) : Card(name), m_damage(damage){}
 
-void Barfight::applyEncounter(Player& player){
+void Barfight::applyEncounter(Player& player) const{
     bool isFighter = false;
     const Fighter* fighter = dynamic_cast<const Fighter*>(&player);
     if(fighter != nullptr){

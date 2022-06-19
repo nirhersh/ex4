@@ -2,10 +2,10 @@
 #include "Dragon.h"
 #include "Vampire.h"
 
-BattleCard::BattleCard(std::string name, int force, int loot, int damage) :
- Card(name), m_force(force), m_loot(loot), m_damage(damage){}
+BattleCard::BattleCard(std::string name, int force, int loot, int damage, bool inGang) :
+ Card(name), m_force(force), m_loot(loot), m_damage(damage), m_inGang(inGang){}
 
-void BattleCard::applyEncounter(Player& player){
+void BattleCard::applyEncounter(Player& player) const{
     // check if battle card is a dragon
     bool isDragon = false;
     bool isVampire = false;
@@ -17,10 +17,12 @@ void BattleCard::applyEncounter(Player& player){
     if(vampire != nullptr){
         isVampire = true;
     }
-    if(player.getAttackStrength() >= m_force){
+    if(player.getAttackStrength() >= m_force && !player.getNeedToLose()){
         player.addCoins(m_loot);
-        player.levelUp();
-        printWinBattle(player.getName(), this->getName());
+        if (!m_inGang){
+            player.levelUp();
+            printWinBattle(player.getName(), this->getName());
+        }
     }else{
         printLossBattle(player.getName(), this->getName());
         if(isDragon){
@@ -41,4 +43,14 @@ void BattleCard::printCard(std::ostream& os) const{
         isDragon = true;
     }
     printMonsterDetails(os, m_force, m_damage, m_loot, isDragon);
+}
+
+int BattleCard::getForce() const
+{
+    return m_force;
+}
+
+void BattleCard::setInGang(bool inGang)
+{
+    m_inGang = inGang;
 }

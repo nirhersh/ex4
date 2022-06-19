@@ -24,7 +24,7 @@ public:
      *
      * @param player - The player.
     */
-    void applyEncounter(Player& player) override;
+    void applyEncounter(Player& player) const override;
 
 private:
     int m_damage;

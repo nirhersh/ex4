@@ -23,7 +23,7 @@ public:
      *
      * @param player - The player.
     */
-    void applyEncounter(Player& player) override;
+    void applyEncounter(Player& player) const override;
 
 
 private:
@@ -35,7 +35,7 @@ private:
     static const int LEAVE = 0;
     static const int BUY_HP = 1;
     static const int BUY_FORCE = 2;
-    void getPlayersChoice(int& playerChoice);
+    void getPlayersChoice(int& playerChoice) const;
 };
 
 #endif // MERCHANT_H

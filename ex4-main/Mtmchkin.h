@@ -12,6 +12,7 @@
 #include "Cards/Merchant.h"
 #include "Cards/Treasure.h"
 #include "Cards/Vampire.h"
+#include "Cards/Gang.h"
 #include "Players/Fighter.h"
 #include "Players/Wizard.h"
 #include "Players/Rogue.h"

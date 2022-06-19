@@ -17,6 +17,7 @@ static void addGoblinCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
 static void addMerchantCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
 static void addTreasureCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
 static void addVampireCard(std::queue<std::unique_ptr<Card>>& cardsQueue);
+static void addGangCard(std::queue<std::unique_ptr<Card>>& cardsQueue, std::fstream& cardsDeckFile, int& line);
 
 enum CARD_TYPES{
     cardBarfight,
@@ -26,7 +27,9 @@ enum CARD_TYPES{
     cardMerchant,
     cardPitfall,
     cardTreasure,
-    cardVampire };
+    cardVampire,
+    cardGang,
+    cardEndGang };
 
 enum PLAYER_TYPES{
     playereFighter,
@@ -46,7 +49,8 @@ static void initializeCardMap()
     CARDS["Pitfall"] = cardPitfall;
     CARDS["Treasure"] = cardTreasure;
     CARDS["Vampire"] = cardVampire;
-    
+    CARDS["Gang"] = cardGang;
+    CARDS["EndGang"] = cardEndGang;
 }
 
 static void initializePlayerMap()
@@ -111,6 +115,14 @@ static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<
         case cardPitfall:
             addPitfallCard(m_cards);
             break;
+        case cardGang:
+            addGangCard(m_cards, cardsDeckFile, line);
+            break;
+        case cardEndGang:{
+            cardsDeckFile.close();
+            throw DeckFileFormatError(line);
+            break;
+        }
         default:
             break;
         }
@@ -293,4 +305,51 @@ static void addVampireCard(std::queue<std::unique_ptr<Card>>& cardsQueue)
 {
     std::unique_ptr<Card> card(new Vampire());
     cardsQueue.push(std::move(card));
+}
+
+static void addGangCard(std::queue<std::unique_ptr<Card>>& cardsQueue, std::fstream& cardsDeckFile, int& line)
+{
+    Gang* gangCard = new Gang();
+    string cardType;
+    while(std::getline(cardsDeckFile, cardType))
+    {
+        if(CARDS.count(cardType) == 0){
+            cardsDeckFile.close();
+            throw DeckFileFormatError(line);
+        }
+        line++;
+        switch (CARDS[cardType])
+        {
+        case cardDragon:{
+            std::unique_ptr<BattleCard> dragonCard(new Dragon());
+            gangCard->addMonster(std::move(dragonCard));
+            break;
+        }
+        case cardGoblin: {
+            std::unique_ptr<BattleCard> goblinCard(new Goblin());
+            gangCard->addMonster(std::move(goblinCard));
+            break;
+        }
+
+        case cardVampire:{
+            std::unique_ptr<BattleCard> vampireCard(new Vampire());
+            gangCard->addMonster(std::move(vampireCard));
+            break;
+        }
+        case cardGang:{
+            cardsDeckFile.close();
+            throw DeckFileFormatError(line);
+            break;
+        }
+        case cardEndGang:{
+            std::unique_ptr<Card> gangPtr = static_cast<std::unique_ptr<Card>>(gangCard);
+            cardsQueue.push(std::move(gangPtr));
+            return;
+        }
+        default:
+            break;
+        } 
+    }
+    cardsDeckFile.close();
+    throw DeckFileFormatError(line);
 }

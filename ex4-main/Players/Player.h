@@ -144,6 +144,10 @@ public:
     */
     void weaken();
 
+    bool getNeedToLose() const;
+    void setNeedToLose(bool lose);
+
+
 private:
     /*
     * Printing operator for the Card class 
@@ -162,6 +166,7 @@ protected:
     int m_coins;
     int m_maxHP;
     int m_force;
+    bool m_needToLose;
     static const int MAX_LEVEL = 10;
     static const int MIN_LEVEL = 1;
     static const int MIN_HEALTH = 0;

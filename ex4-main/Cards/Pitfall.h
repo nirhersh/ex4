@@ -19,6 +19,11 @@ public:
 
     Pitfall& operator=(const Pitfall&) = default;
 
+    /*
+     * Handling the player's applyEncounter with the Pitfall card:
+     *
+     * @param player - The player.
+    */
     void applyEncounter(Player& player) override;
 
 private:

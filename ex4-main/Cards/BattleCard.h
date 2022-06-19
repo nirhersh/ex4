@@ -11,7 +11,6 @@ public:
     */
     BattleCard(std::string name, int force, int loot, int damage);
 
-
     /*
      * Handling the player's applyEncounter with the card:
      *
@@ -26,6 +25,11 @@ public:
     BattleCard& operator=(const BattleCard& other) = default;
 
 protected:
+    /*
+    * Print function for thE Battle Card
+    *
+    * @param os - The stream to print to
+    */
     void printCard(std::ostream& os) const override;
 
 

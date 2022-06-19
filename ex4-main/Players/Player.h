@@ -25,32 +25,30 @@ public:
     */
     explicit Player(const string name, const int maxHP=100, const int force=5);
 
-    /*
-    *
-    * Destructor of the Player class
-    * 
-    */
     virtual ~Player() = default;
 
-    /*
-    *
-    * Copy C'tor of the Player class
-    * 
-    */
     Player(const Player& player) = default;
 
     Player& operator=(const Player& other) = default;
 
     /*
-    * getters
-    */
-   string getName();
-   int getCoins();
+    * Gets the player's name
+    *
+    * @return - The player's name
+    */ 
+    string getName() const;
 
-   /*
-    * life to zero
+    /*
+    * Gets the player's amount of coins
+    *
+    * @return - The player's amount of coins
     */
-   void knockOut();
+    int getCoins() const;
+
+    /*
+    * a Function that Knock's out the player, lowering his HP to 0
+    */
+    void knockOut();
 
 
     /*
@@ -63,8 +61,8 @@ public:
     /*
     *
     * a function that returns the current level of the player
-    * @return 
-    *       The current player level
+    * 
+    * @return - The current player level
     */
     int getLevel() const;
 
@@ -100,8 +98,7 @@ public:
     *
     * a function that checks if the player has 0 HP
     * 
-    * @return
-    *       true if the player has 0 HP, otherwise false
+    * @return - true if the player has 0 HP, otherwise false
     */
     bool isKnockedOut() const;
 
@@ -129,8 +126,8 @@ public:
     * a function that subtracts coins from the player
     * 
     * @param payment - the amount of coins to subtract from the player
-    * @return 
-    *       true if the payment was successfull, false if the player didn't have enough money
+    * 
+    * @return - true if the payment was successfull, false if the player didn't have enough money
     */
     bool pay(const int payment);
     
@@ -138,15 +135,24 @@ public:
     *
     * a function that returns the current attack strength of the player: level + force
     * 
-    * @return 
-    *       the current attack strength of the player
+    * @return - the current attack strength of the player
     */
     virtual int getAttackStrength() const;
 
+    /*
+    * A function that lowers the player's force by 1
+    */
     void weaken();
 
 private:
-
+    /*
+    * Printing operator for the Card class 
+    *
+    * @param os - The stream to print to
+    * @param card - The card to print
+    * 
+    * @return - the stream written to
+    */ 
     friend std::ostream& operator<<(std::ostream& os, const Player& player1);
 
 protected:
@@ -156,13 +162,14 @@ protected:
     int m_coins;
     int m_maxHP;
     int m_force;
-    static const int maxLevel = 10;
-    static const int minLevel = 1;
-    static const int minHealth = 0;
-    static const int minCoins = 0;
-    static const int defaultForce = 5;
-    static const int defaultMaxHp = 100;
+    static const int MAX_LEVEL = 10;
+    static const int MIN_LEVEL = 1;
+    static const int MIN_HEALTH = 0;
+    static const int MIN_COINS = 0;
+    static const int DEFAULT_FORCE = 5;
+    static const int DEFAULT_MAX_HP = 100;
     static const int DEFUALT_COINS = 10;
+    static const int MIN_FORCE = 0;
 };
 
 #endif //EX4_Card_H

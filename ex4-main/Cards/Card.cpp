@@ -5,11 +5,11 @@ using std::endl;
 
 Card::Card(std::string name){
     for(char c : name){
-        if(!std::isalpha(c) || c == ' '){
+        if(!std::isalpha(c) || c == INVALID_CHAR){
             throw InvalidCardName(name);
         }
     }
-    if(name.size() > 15){
+    if(name.size() > NAME_MAX_SIZE){
         throw InvalidCardSize();
     }
     m_name = name;

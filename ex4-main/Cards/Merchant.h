@@ -18,7 +18,13 @@ public:
 
     Merchant& operator=(const Merchant&) = default;
 
+    /*
+     * Handling the player's applyEncounter with the Merchant card:
+     *
+     * @param player - The player.
+    */
     void applyEncounter(Player& player) override;
+
 
 private:
     static const int HP_POTION_COST = 5;
@@ -29,6 +35,7 @@ private:
     static const int LEAVE = 0;
     static const int BUY_HP = 1;
     static const int BUY_FORCE = 2;
+    void getPlayersChoice(int& playerChoice);
 };
 
 #endif // MERCHANT_H

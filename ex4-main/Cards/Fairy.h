@@ -19,6 +19,11 @@ public:
 
     Fairy& operator=(const Fairy&) = default;
 
+    /*
+     * Handling the player's applyEncounter with the Fairy card:
+     *
+     * @param player - The player.
+    */
     void applyEncounter(Player& player) override;
 
 private:

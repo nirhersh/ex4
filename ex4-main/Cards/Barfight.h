@@ -13,15 +13,17 @@ public:
     */
     Barfight(std::string name = BARFIGHT_NAME, int damage = HP_LOSS);
 
-    /*
-    * Copy C'tor of Barfight class
-    */
     Barfight(const Barfight&) = default;
 
     ~Barfight() = default;
 
     Barfight& operator=(const Barfight&) = default;
 
+    /*
+    * A function that changes a given player according to the encounter with a Barfight card
+    *
+    * @param player - The player.
+    */
     void applyEncounter(Player& player) override;
 
 private:

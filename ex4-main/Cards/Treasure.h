@@ -18,6 +18,11 @@ public:
 
     Treasure& operator=(const Treasure&) = default;
 
+    /*
+     * Handling the player's applyEncounter with the Treasure card:
+     *
+     * @param player - The player.
+    */
     void applyEncounter(Player& player) override;
 
 private:

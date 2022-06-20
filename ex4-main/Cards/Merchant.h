@@ -35,7 +35,8 @@ private:
     static const int LEAVE = 0;
     static const int BUY_HP = 1;
     static const int BUY_FORCE = 2;
-    void getPlayersChoice(int& playerChoice) const;
+    static const int INVALID_INPUT = -1;
+    int getPlayersChoice() const;
 };
 
 #endif // MERCHANT_H

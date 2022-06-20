@@ -6,12 +6,12 @@ int main(){
     static const int MAX_ROUNDS = 100;
     std::string filePath = "deck.txt";
     try{
-        Mtmchkin game = Mtmchkin(filePath);
+        Mtmchkin game(filePath);
         while(!game.isGameOver() && game.getNumberOfRounds() < MAX_ROUNDS){
             game.playRound();
             game.printLeaderBoard();
         }
-    }catch(DeckFileError& e){
+    }catch(std::exception& e){
         std::cout << e.what() << std::endl;
         return FAIL;
     }

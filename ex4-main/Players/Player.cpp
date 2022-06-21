@@ -15,7 +15,8 @@ Player::Player(const string name, const int maxHP, const int force) :
 m_name(name),
 m_level(MIN_LEVEL),
 m_healthPoints(MIN_HEALTH),
-m_coins(DEFUALT_COINS)
+m_coins(DEFUALT_COINS),
+m_needToLose(false)
 {
     if(maxHP > MIN_HEALTH ){
         m_healthPoints = maxHP;

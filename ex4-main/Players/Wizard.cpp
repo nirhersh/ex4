@@ -9,7 +9,7 @@ void Wizard::heal(const int hp){
     if(hp <= MIN_HEALTH){
         return;
     }
-    if(hp + HEAL_BONUS*m_healthPoints > m_maxHP){
+    if(HEAL_BONUS*hp + m_healthPoints > m_maxHP){
         m_healthPoints = m_maxHP;
     }else{
         m_healthPoints += HEAL_BONUS*hp;

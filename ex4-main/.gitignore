@@ -1,0 +1,6 @@
+fileTests/*
+*.txt
+*.in
+*.deck
+*.result
+*.out

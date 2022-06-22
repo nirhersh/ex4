@@ -31,6 +31,8 @@ enum CARD_TYPES{
     cardGang,
     cardEndGang };
 
+    static const int MAX_NAME_SIZE = 15;
+
 enum PLAYER_TYPES{
     playereFighter,
     playerWizard,
@@ -137,12 +139,26 @@ static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<
 static int numberOfPlayersInitialization()
 {
     printEnterTeamSizeMessage();
+    bool validInput = false;
     int numberOfPlayers;
-    std::cin >> numberOfPlayers;
-    while (numberOfPlayers < 2 || numberOfPlayers > 6){
-        printInvalidTeamSize();
-        printEnterTeamSizeMessage();
-        std::cin >> numberOfPlayers;
+    std::string inputString;
+    while(validInput == false){
+        getline(std::cin, inputString);
+        try{
+            numberOfPlayers = std::stoi(inputString);
+        }catch(std::invalid_argument& e){
+            printInvalidTeamSize();
+            printEnterTeamSizeMessage();
+            validInput = false;
+            continue;
+        }
+        if(numberOfPlayers < 2 || numberOfPlayers > 6){
+            printInvalidTeamSize();
+            printEnterTeamSizeMessage();
+            validInput = false;
+            continue;
+        }
+        validInput = true;
     }
     return numberOfPlayers;
 }
@@ -161,6 +177,10 @@ static void playerInitialization(std::vector<std::unique_ptr<Player>>& m_players
             startOver = false;
             std::cin >> name;
             std::cin >> playerType;
+            if(name.size() > MAX_NAME_SIZE){
+                printInvalidName();
+                continue;
+            }
             for (char c : name)
             {
                 if(!isalpha(c)){

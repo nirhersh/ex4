@@ -14,9 +14,9 @@ public:
 
     ~Gang() = default;
 
-    Gang(const Gang&) = delete;
+    Gang(Gang& gang1);
 
-    Gang& operator=(const Gang&) = delete;
+    Gang& operator=(Gang& gang1);
 
     void addMonster(std::unique_ptr<BattleCard> newMonster);
 

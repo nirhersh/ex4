@@ -8,9 +8,7 @@ void Merchant::applyEncounter(Player& player) const{
     int playerChoice = INVALID_INPUT;
     int coinsPaid = 0;
     printMerchantInitialMessageForInteractiveEncounter(std::cout, player.getName(), player.getCoins());
-    while(playerChoice == INVALID_INPUT){
-        playerChoice = getPlayersChoice();
-    }
+    playerChoice = getPlayersChoice();
     switch(playerChoice){
         case BUY_HP:
             if(player.pay(HP_POTION_COST)){
@@ -33,28 +31,37 @@ void Merchant::applyEncounter(Player& player) const{
 }
 
 int Merchant::getPlayersChoice() const{
-    int playerChoice = INVALID_INPUT;
-    bool validInput = true;
-    do{
-        std::string inputString;
+    int playerChoice;
+    bool validInput = false;
+    std::string inputString;
+    std::cin >> inputString;        
+    while(!validInput){
         std::getline(std::cin, inputString);
-        if(inputString == ""){
+        if(inputString.size() != 1){
+            //std::cout << "size is no good: " << inputString.size() << std::endl;
+            printInvalidInput();
             continue;
+        }
+        for(char c : inputString){
+            if(c == '\r'){
+                //std::cout << "weird windows char" << std::endl;
+                continue;
+            }
         }
         try{
             playerChoice = std::stoi(inputString);
-        }catch(std::invalid_argument& e){
+        }catch(std::exception& e){
             printInvalidInput();
-            validInput = false;
+            //std::cout<< "not a number, printed " << int(inputString[0]) << std::endl;
             continue;
         }
         
         if(playerChoice != LEAVE && playerChoice != BUY_HP && playerChoice != BUY_FORCE){
             printInvalidInput();
-            validInput = false;
-            playerChoice = INVALID_INPUT;
+            //std::cout<< "poor choise " << int(inputString[0]) << std::endl;
+            continue;
         }
         validInput = true;
-    }while(!validInput);
+    }
     return playerChoice;
 }

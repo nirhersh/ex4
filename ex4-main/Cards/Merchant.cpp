@@ -37,7 +37,6 @@ int Merchant::getPlayersChoice() const{
     while(!validInput){
         std::getline(std::cin, inputString);
         if(inputString.size() != 1){
-            //std::cout << "size is no good: " << inputString.size() << std::endl;
             printInvalidInput();
             continue;
         }
@@ -45,13 +44,11 @@ int Merchant::getPlayersChoice() const{
             playerChoice = std::stoi(inputString);
         }catch(std::exception& e){
             printInvalidInput();
-            //std::cout<< "not a number, printed " << int(inputString[0]) << std::endl;
             continue;
         }
         
         if(playerChoice != LEAVE && playerChoice != BUY_HP && playerChoice != BUY_FORCE){
             printInvalidInput();
-            //std::cout<< "poor choise " << int(inputString[0]) << std::endl;
             continue;
         }
         validInput = true;

@@ -83,7 +83,7 @@ static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<
     if(!cardsDeckFile.is_open()){
         throw DeckFileNotFound();
     }
-    int line = 1; 
+    int line = 1;  
     string cardType;
     while(std::getline(cardsDeckFile, cardType))
     {
@@ -130,7 +130,7 @@ static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<
             break;
         }
     }
-    if(line < 5){
+    if(line -1 < 5){
         cardsDeckFile.close();
         throw DeckFileInvalidSize();
     }

@@ -72,7 +72,8 @@ Mtmchkin::Mtmchkin(const std::string fileName)
     m_isGameOver = false;
     cardInitialization(fileName, m_cards);
     playerInitialization(m_playersInGame);
-    
+    std::string refresh;
+    std::getline(std::cin, refresh);
 }
 
 static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<Card>>& m_cards)

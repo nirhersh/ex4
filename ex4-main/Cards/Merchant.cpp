@@ -33,20 +33,13 @@ void Merchant::applyEncounter(Player& player) const{
 int Merchant::getPlayersChoice() const{
     int playerChoice;
     bool validInput = false;
-    std::string inputString;
-    std::cin >> inputString;        
+    std::string inputString;        
     while(!validInput){
         std::getline(std::cin, inputString);
         if(inputString.size() != 1){
             //std::cout << "size is no good: " << inputString.size() << std::endl;
             printInvalidInput();
             continue;
-        }
-        for(char c : inputString){
-            if(c == '\r'){
-                //std::cout << "weird windows char" << std::endl;
-                continue;
-            }
         }
         try{
             playerChoice = std::stoi(inputString);

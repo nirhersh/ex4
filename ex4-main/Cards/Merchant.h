@@ -36,6 +36,7 @@ private:
     static const int BUY_HP = 1;
     static const int BUY_FORCE = 2;
     static const int INVALID_INPUT = -1;
+    static const int VALID_INPUT_SIZE = 1;
     int getPlayersChoice() const;
 };
 

@@ -32,6 +32,14 @@ enum CARD_TYPES{
     cardEndGang };
 
     static const int MAX_NAME_SIZE = 15;
+    static const int NO_CARDS = 0;
+    static const int NO_PLAYERS = 0;
+    static const int MIN_CARDS = 5;
+    static const int MIN_PLAYERS = 2;
+    static const int MAX_PLAYERS = 6;
+    static const int LINE_OFFSET = 1;
+    static const int INITIAL_LINE = 1;
+    static const int INITIAL_RANKING = 1;
 
 enum PLAYER_TYPES{
     playereFighter,
@@ -83,11 +91,11 @@ static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<
     if(!cardsDeckFile.is_open()){
         throw DeckFileNotFound();
     }
-    int line = 1;  
+    int line = INITIAL_LINE;  
     string cardType;
     while(std::getline(cardsDeckFile, cardType))
     {
-        if(CARDS.count(cardType) == 0){
+        if(CARDS.count(cardType) == NO_CARDS){
             cardsDeckFile.close();
             throw DeckFileFormatError(line);
         }
@@ -130,7 +138,7 @@ static void cardInitialization(std::string fileName, std::queue<std::unique_ptr<
             break;
         }
     }
-    if(line -1 < 5){
+    if(line - LINE_OFFSET < MIN_CARDS){
         cardsDeckFile.close();
         throw DeckFileInvalidSize();
     }
@@ -153,7 +161,7 @@ static int numberOfPlayersInitialization()
             validInput = false;
             continue;
         }
-        if(numberOfPlayers < 2 || numberOfPlayers > 6){
+        if(numberOfPlayers < MIN_PLAYERS || numberOfPlayers > MAX_PLAYERS){
             printInvalidTeamSize();
             printEnterTeamSizeMessage();
             validInput = false;
@@ -193,7 +201,7 @@ static void playerInitialization(std::vector<std::unique_ptr<Player>>& m_players
             if(startOver){
                 continue;
             }
-            if(PLAYERS.count(playerType) == 0){
+            if(PLAYERS.count(playerType) == NO_PLAYERS){
                 printInvalidClass();
                 continue;
             }
@@ -257,7 +265,7 @@ bool Mtmchkin::isGameOver(){
 }
 
 void Mtmchkin::printLeaderBoard() const{
-    int ranking = 1;
+    int ranking = INITIAL_RANKING;
     printLeaderBoardStartMessage();
     for(const std::unique_ptr<Player>& player : m_playersWon){
         printPlayerLeaderBoard(ranking, *player);
@@ -334,7 +342,7 @@ static void addGangCard(std::queue<std::unique_ptr<Card>>& cardsQueue, std::fstr
     string cardType;
     while(std::getline(cardsDeckFile, cardType))
     {
-        if(CARDS.count(cardType) == 0){
+        if(CARDS.count(cardType) == NO_CARDS){
             cardsDeckFile.close();
             throw DeckFileFormatError(line);
         }

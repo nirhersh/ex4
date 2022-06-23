@@ -36,7 +36,7 @@ int Merchant::getPlayersChoice() const{
     std::string inputString;        
     while(!validInput){
         std::getline(std::cin, inputString);
-        if(inputString.size() != 1){
+        if(inputString.size() != VALID_INPUT_SIZE){
             printInvalidInput();
             continue;
         }

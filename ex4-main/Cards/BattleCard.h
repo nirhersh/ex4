@@ -18,8 +18,6 @@ public:
     */
     virtual void applyEncounter(Player& player) const;
 
-    void applyBattle(Player& player, bool lose);
-
     BattleCard(const BattleCard&) = default;
 
     ~BattleCard() = default;
@@ -33,8 +31,18 @@ public:
     */
     void printCard(std::ostream& os) const override;
 
+    /*
+    * Gets the monster's force
+    * 
+    * @return - The monster's force
+    */ 
     int getForce() const;
 
+    /*
+    * a function to set if the monster is a part of a Gang card
+    *
+    * @param inGang - a boolean, true if the monster is in a gang, false otherwise
+    */ 
     void setInGang(bool inGang);
 
 private:

@@ -10,16 +10,44 @@
 
 class Gang : public Card{
 public:
+    /*
+    * C'tor of the Gang class
+    *
+    * @param name -  The gang card name, by default sets to "Gang"
+    * 
+    */ 
     Gang(std::string name = GANG_NAME);
 
     ~Gang() = default;
 
+    /*
+    * Copy C'tor of the Gang class
+    *
+    * @param gang1 - The gang to copy
+    */
     Gang(Gang& gang1);
 
+    /*
+    * Assignment operator of the Gang class
+    *
+    * @param gang1 -  The gang to assign
+    * 
+    * @return - A reference to the newly assigned Gang
+    */ 
     Gang& operator=(Gang& gang1);
 
+    /*
+    * a function that adds a monster to a gang
+    *
+    * @param newMonster -  a unique pointer to the new monster to add to the Gang
+    */ 
     void addMonster(std::unique_ptr<BattleCard> newMonster);
 
+    /*
+    * a function that handles the encounter of the player with a gang
+    * 
+    * @param player -  a reference to the player who encountered the Gang
+    */ 
     void applyEncounter(Player& player) const override;
 
     /*
@@ -31,7 +59,6 @@ public:
 
 private:
     std::vector<std::unique_ptr<BattleCard>> m_gangMonsters;
-    static const int INITIAL_SIZE = 0;
     static const std::string GANG_NAME;
 };
 

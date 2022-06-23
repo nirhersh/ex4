@@ -86,9 +86,9 @@ void Gang::applyEncounter(Player& player) const{
 }
 
 void Gang::printCard(std::ostream& os) const {
-    // for(const std::unique_ptr<BattleCard>& monster : m_gangMonsters){
-    //     monster->printCard(os);
-    // }
+    for(const std::unique_ptr<BattleCard>& monster : m_gangMonsters){
+        monster->printCard(os);
+    }
     return;
 }
 
